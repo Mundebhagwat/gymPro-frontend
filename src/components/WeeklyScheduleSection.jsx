@@ -423,7 +423,7 @@ import {
   LocationOn as LocationIcon
 } from '@mui/icons-material';
 
-const WeeklyScheduleSection = () => {
+const WeeklyScheduleSection = ({trainerId = localStorage.getItem("userId")}) => {
   const [cancelDialog, setCancelDialog] = useState({ open: false, classId: null });
   const [scheduleData, setScheduleData] = useState({});
   const [loading, setLoading] = useState(true);
@@ -467,10 +467,11 @@ const WeeklyScheduleSection = () => {
       setLoading(true);
       setError(null);
       
-      const response = await fetch('http://localhost:5000/api/schedules/trainer/685b01cc9113e8144d3920f2');
+      const response = await fetch(`http://localhost:5000/api/schedules/trainer/${trainerId}/week`);
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
+        
       }
       
       const data = await response.json();
@@ -479,7 +480,7 @@ const WeeklyScheduleSection = () => {
       const transformedData = {};
       
       data.schedules.forEach((schedule) => {
-        const dayName = getDayName(schedule.date);
+        const dayName = getDayName(schedule.class.date);
         const timeSlot = formatTimeSlot(
           schedule.class.time_slot.startTime,
           schedule.class.time_slot.endTime
@@ -497,7 +498,7 @@ const WeeklyScheduleSection = () => {
           booked: schedule.status === 'Scheduled',
           status: schedule.status,
           skillRequired: schedule.class.skill_required,
-          originalDate: schedule.date
+          originalDate: schedule.class.date
         };
       });
       

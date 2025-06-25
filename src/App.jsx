@@ -4,7 +4,8 @@ import SignIn from './pages/LoginPage';
 import SignUp from './pages/RegisterPage';
 import Admin from './pages/AdminPage';
 import Trainer from './pages/TrainersPage';
-import ProtectedRoute from './components/ProtectedRoute'; // ⬅️ Import the wrapper
+import GymPage from './pages/GymPage';
+import ProtectedRoute from './components/ProtectedRoute'; 
 
 function App() {
   return (
@@ -28,6 +29,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Trainer />
+            </ProtectedRoute>
+          } 
+        />
+         <Route 
+          path="/gym" 
+          element={
+            <ProtectedRoute>
+              <GymPage />
             </ProtectedRoute>
           } 
         />
