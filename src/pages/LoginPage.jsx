@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 
 const InputField = ({ 
   label, 
@@ -33,11 +33,12 @@ const InputField = ({
   </div>
 );
 
-const Button = ({ children, onClick, variant = 'primary', fullWidth = false, type = 'button' }) => (
+const Button = ({ children, onClick, variant = 'primary', fullWidth = false, type = 'button', disabled = false }) => (
   <button
     type={type}
     onClick={onClick}
-    className={`btn ${variant === 'primary' ? 'btn-primary' : 'btn-secondary'} ${fullWidth ? 'btn-full' : ''}`}
+    disabled={disabled}
+    className={`btn ${variant === 'primary' ? 'btn-primary' : 'btn-secondary'} ${fullWidth ? 'btn-full' : ''} ${disabled ? 'btn-disabled' : ''}`}
   >
     {children}
   </button>
@@ -54,10 +55,11 @@ const Alert = ({ type, message, onClose }) => (
     )}
   </div>
 );
- 
 
 const LoginPage = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -71,71 +73,107 @@ const LoginPage = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Add your login API call here
-    console.log('Login attempted with:', formData);
-    setAlert({
-      show: true,
-      message: 'Login functionality will be connected to backend API',
-      type: 'info'
-    });
-    setTimeout(() => setAlert({ show: false, message: '', type: 'success' }), 3000);
+  // Function to determine redirect path based on user role
+  const getRedirectPath = (role) => {
+    switch (role.toLowerCase()) {
+      case 'admin':
+        return '/admin';
+      case 'trainer':
+        return '/trainer';
+      case 'gym':
+      case 'gym_owner':
+      case 'gym owner':
+        return '/gym'; // You might need to add this route to your App.jsx
+      default:
+        console.warn(`Unknown role: ${role}, redirecting to home`);
+        return '/';
+    }
   };
 
-  // const InputField = ({ 
-  //   label, 
-  //   type = 'text', 
-  //   value, 
-  //   onChange, 
-  //   required = false,
-  //   startIcon,
-  //   endIcon,
-  //   onEndIconClick,
-  //   placeholder
-  // }) => (
-  //   <div className="input-group">
-  //     <label className="input-label">{label}</label>
-  //     <div className="input-container">
-  //       {startIcon && <span className="input-icon-start">{startIcon}</span>}
-  //       <input
-  //         type={type}
-  //         value={value}
-  //         onChange={(e) => onChange(e.target.value)}
-  //         required={required}
-  //         className="input-field"
-  //         placeholder={placeholder}
-  //       />
-  //       {endIcon && (
-  //         <span className="input-icon-end" onClick={onEndIconClick}>
-  //           {endIcon}
-  //         </span>
-  //       )}
-  //     </div>
-  //   </div>
-  // );
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    // Basic validation
+    if (!formData.email || !formData.password) {
+      setAlert({
+        show: true,
+        message: 'Please fill in all fields',
+        type: 'error'
+      });
+      setTimeout(() => setAlert({ show: false, message: '', type: 'success' }), 3000);
+      return;
+    }
 
-  // const Button = ({ children, onClick, variant = 'primary', fullWidth = false, type = 'button' }) => (
-  //   <button
-  //     type={type}
-  //     onClick={onClick}
-  //     className={`btn ${variant === 'primary' ? 'btn-primary' : 'btn-secondary'} ${fullWidth ? 'btn-full' : ''}`}
-  //   >
-  //     {children}
-  //   </button>
-  // );
+    setIsLoading(true);
+    
+    try {
+      const response = await fetch('http://localhost:5000/api/users/commonlogin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password
+        })
+      });
 
-  // const Alert = ({ type, message, onClose }) => (
-  //   <div className={`alert alert-${type}`}>
-  //     <span className="alert-icon">
-  //       {type === 'error' ? '⚠️' : type === 'success' ? '✅' : 'ℹ️'}
-  //     </span>
-  //     <span className="alert-message">{message}</span>
-  //     {onClose && (
-  //       <span className="alert-close" onClick={onClose}>×</span>
-  //     )}
-  //   </div>
-  // );
+      const data = await response.json();
+      
+
+      if (response.ok) {
+        // Store all the data in memory (React state) instead of localStorage
+        const userData = {
+          token: data.token,
+          role: data.user.role,
+          id: data.user.id,
+          name: data.user.name,
+          email: data.user.email,
+          phone: data.user.phoneNumber,
+          skills: data.user.skills,
+          restPeriod: data.user.rest_period,
+          availability: data.user.availability,
+          preferredGyms: data.user.preferred_gyms,
+          userData: data.user
+        };
+        
+        setAlert({
+          show: true,
+          message: `Welcome back, ${data.user.name}! Redirecting to your dashboard...`,
+          type: 'success'
+        });
+        
+        // Get the redirect path based on user role
+        const redirectPath = getRedirectPath(data.user.role);
+        
+        // Redirect after a short delay to show the success message
+        setTimeout(() => {
+          navigate(redirectPath, { 
+            replace: true,
+            state: { userData } // Pass user data through navigation state
+          });
+        }, 1500);
+        
+      } else {
+        setAlert({
+          show: true,
+          message: data.message || 'Login failed. Please check your credentials.',
+          type: 'error'
+        });
+        setTimeout(() => setAlert({ show: false, message: '', type: 'success' }), 5000);
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      setAlert({
+        show: true,
+        message: 'Network error. Please check your connection and try again.',
+        type: 'error'
+      });
+      setTimeout(() => setAlert({ show: false, message: '', type: 'success' }), 5000);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div>
@@ -370,7 +408,7 @@ const LoginPage = () => {
             0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
-        .btn-primary:hover {
+        .btn-primary:hover:not(:disabled) {
           background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 50%, #5b21b6 100%);
           box-shadow: 
             0 12px 24px rgba(139, 92, 246, 0.4),
@@ -378,11 +416,18 @@ const LoginPage = () => {
           transform: translateY(-3px);
         }
 
-        .btn-primary:active {
+        .btn-primary:active:not(:disabled) {
           transform: translateY(-1px);
           box-shadow: 
             0 6px 12px rgba(139, 92, 246, 0.3),
             0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+          transform: none !important;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
         }
 
         .btn-secondary {
@@ -524,9 +569,10 @@ const LoginPage = () => {
               variant="primary"
               fullWidth
               type="button"
+              disabled={isLoading}
               onClick={handleSubmit}
             >
-              Sign In to Gym
+              {isLoading ? 'Signing In...' : 'Sign In to Gym'}
             </Button>
           </div>
           

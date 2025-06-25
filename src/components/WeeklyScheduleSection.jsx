@@ -1,0 +1,396 @@
+import React, { useState } from 'react';
+import {
+  Paper,
+  Typography,
+  Box,
+  Grid,
+  Button,
+  Card,
+  CardContent,
+  Chip,
+  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  DialogContentText,
+  Container,
+  Divider
+} from '@mui/material';
+import {
+  Cancel as CancelIcon,
+  FitnessCenter as GymIcon,
+  Schedule as TimeIcon,
+  LocationOn as LocationIcon
+} from '@mui/icons-material';
+
+const WeeklyScheduleSection = () => {
+  const [cancelDialog, setCancelDialog] = useState({ open: false, classId: null });
+
+  // Time slots for the schedule
+  const timeSlots = [
+    '6:00 - 7:00 AM',
+    '7:00 - 8:00 AM',
+    '8:00 - 9:00 AM',
+    '5:00 - 6:00 PM',
+    '6:00 - 7:00 PM',
+    '7:00 - 8:00 PM',
+    '8:00 - 9:00 PM'
+  ];
+
+  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+  // Dummy data - will be replaced with real data later
+  const scheduleData = {
+    'Monday': {
+      '6:00 - 7:00 AM': { id: 1, className: 'Morning Yoga', gymName: 'Zen Fitness', booked: true },
+      '7:00 - 8:00 PM': { id: 2, className: 'CrossFit', gymName: 'Iron Gym', booked: true }
+    },
+    'Tuesday': {
+      '6:00 - 7:00 PM': { id: 3, className: 'Pilates', gymName: 'Flex Studio', booked: true }
+    },
+    'Wednesday': {
+      '6:00 - 7:00 AM': { id: 4, className: 'HIIT Training', gymName: 'Power Gym', booked: true },
+      '8:00 - 9:00 PM': { id: 5, className: 'Spin Class', gymName: 'Cycle Hub', booked: true }
+    },
+    'Thursday': {
+      '5:00 - 6:00 PM': { id: 6, className: 'Boxing', gymName: 'Fight Club', booked: true }
+    },
+    'Friday': {
+      '7:00 - 8:00 PM': { id: 7, className: 'Zumba', gymName: 'Dance Fit', booked: true }
+    },
+    'Saturday': {
+      '8:00 - 9:00 AM': { id: 8, className: 'Boot Camp', gymName: 'Outdoor Fitness', booked: true },
+      '6:00 - 7:00 PM': { id: 9, className: 'Strength Training', gymName: 'Iron Gym', booked: true }
+    },
+    'Sunday': {
+      '9:00 - 10:00 AM': { id: 10, className: 'Recovery Yoga', gymName: 'Zen Fitness', booked: true }
+    }
+  };
+
+  const handleCancelClick = (classId) => {
+    setCancelDialog({ open: true, classId });
+  };
+
+  const handleCancelConfirm = () => {
+    // Logic to cancel class booking will be implemented here
+    console.log('Cancelling class with ID:', cancelDialog.classId);
+    setCancelDialog({ open: false, classId: null });
+    // TODO: Remove class from schedule or mark as cancelled
+  };
+
+  const handleCancelClose = () => {
+    setCancelDialog({ open: false, classId: null });
+  };
+
+  const getClassesForDay = (day) => {
+    const daySchedule = scheduleData[day] || {};
+    return Object.entries(daySchedule)
+      .filter(([_, classData]) => classData.booked)
+      .map(([timeSlot, classData]) => ({ ...classData, timeSlot }));
+  };
+
+  const renderClassItem = (classData) => (
+    <Card
+      key={classData.id}
+      sx={{
+        mb: 2,
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        color: 'white',
+        borderRadius: 3,
+        overflow: 'hidden',
+        position: 'relative',
+        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        '&:hover': {
+          transform: 'translateY(-4px)',
+          boxShadow: '0 12px 24px rgba(102, 126, 234, 0.3)',
+        },
+        '&:last-child': {
+          mb: 0
+        }
+      }}
+    >
+      <CardContent sx={{ p: 3, position: 'relative' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: 700,
+              fontSize: '1.1rem',
+              textShadow: '0 1px 2px rgba(0,0,0,0.1)'
+            }}
+          >
+            {classData.className}
+          </Typography>
+          <IconButton
+            size="small"
+            onClick={() => handleCancelClick(classData.id)}
+            sx={{
+              backgroundColor: 'rgba(255, 255, 255, 0.2)',
+              color: 'white',
+              backdropFilter: 'blur(10px)',
+              '&:hover': {
+                backgroundColor: 'rgba(255, 82, 82, 0.8)',
+                transform: 'scale(1.1)',
+              },
+              transition: 'all 0.2s ease'
+            }}
+          >
+            <CancelIcon fontSize="small" />
+          </IconButton>
+        </Box>
+
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5, opacity: 0.9 }}>
+          <TimeIcon sx={{ fontSize: 18, mr: 1 }} />
+          <Typography variant="body2" sx={{ fontWeight: 500 }}>
+            {classData.timeSlot}
+          </Typography>
+        </Box>
+
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, opacity: 0.9 }}>
+          <LocationIcon sx={{ fontSize: 18, mr: 1 }} />
+          <Typography variant="body2" sx={{ fontWeight: 500 }}>
+            {classData.gymName}
+          </Typography>
+        </Box>
+
+        <Chip
+          label="Booked"
+          size="small"
+          sx={{
+            backgroundColor: 'rgba(255, 255, 255, 0.2)',
+            color: 'white',
+            fontWeight: 600,
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255, 255, 255, 0.3)'
+          }}
+        />
+      </CardContent>
+    </Card>
+  );
+
+  const renderDayCard = (day) => {
+    const classes = getClassesForDay(day);
+    const hasClasses = classes.length > 0;
+
+    return (
+      <Grid item xs={12} sm={6} md={4} lg={12/7} key={day}>
+        <Paper
+          elevation={0}
+          sx={{
+            borderRadius: 4,
+            overflow: 'hidden',
+            background: hasClasses 
+              ? 'linear-gradient(145deg, #f8fafc 0%, #e2e8f0 100%)'
+              : 'linear-gradient(145deg, #f1f5f9 0%, #e2e8f0 100%)',
+            border: '1px solid rgba(148, 163, 184, 0.1)',
+            transition: 'all 0.3s ease',
+            height: '100%',
+            minHeight: 400,
+            '&:hover': {
+              transform: 'translateY(-2px)',
+              boxShadow: '0 8px 25px rgba(0, 0, 0, 0.1)',
+            }
+          }}
+        >
+          <Box
+            sx={{
+              background: 'linear-gradient(135deg, #1e293b 0%, #334155 100%)',
+              color: 'white',
+              p: 2.5,
+              textAlign: 'center'
+            }}
+          >
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px',
+                fontSize: '1rem'
+              }}
+            >
+              {day}
+            </Typography>
+          </Box>
+
+          <CardContent sx={{ p: 3, height: 'calc(100% - 70px)', display: 'flex', flexDirection: 'column' }}>
+            {hasClasses ? (
+              <Box sx={{ flex: 1 }}>
+                {classes.map(renderClassItem)}
+              </Box>
+            ) : (
+              <Box
+                sx={{
+                  flex: 1,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  opacity: 0.6
+                }}
+              >
+                <GymIcon sx={{ fontSize: 48, color: '#94a3b8', mb: 2 }} />
+                <Typography
+                  variant="body1"
+                  sx={{
+                    color: '#64748b',
+                    fontWeight: 500,
+                    textAlign: 'center',
+                    fontSize: '0.95rem'
+                  }}
+                >
+                  No Classes Scheduled
+                </Typography>
+              </Box>
+            )}
+          </CardContent>
+        </Paper>
+      </Grid>
+    );
+  };
+
+  return (
+    <Container maxWidth="xl" sx={{ py: 4 }}>
+      <Paper
+        elevation={0}
+        sx={{
+          borderRadius: 6,
+          background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)',
+          border: '1px solid rgba(226, 232, 240, 0.8)',
+          overflow: 'hidden'
+        }}
+      >
+        <Box
+          sx={{
+            background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
+            color: 'white',
+            p: 4,
+            textAlign: 'center',
+            position: 'relative',
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: 'url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%239C92AC" fill-opacity="0.1"%3E%3Ccircle cx="30" cy="30" r="4"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
+            }
+          }}
+        >
+          <Box sx={{ position: 'relative', zIndex: 1 }}>
+            <Typography
+              variant="h3"
+              sx={{
+                fontWeight: 800,
+                mb: 1,
+                fontSize: { xs: '2rem', md: '2.5rem' },
+                textShadow: '0 2px 4px rgba(0,0,0,0.1)'
+              }}
+            >
+              Weekly Schedule
+            </Typography>
+            <Typography
+              variant="h6"
+              sx={{
+                opacity: 0.9,
+                fontWeight: 400,
+                fontSize: '1.1rem'
+              }}
+            >
+              Your Fitness Journey This Week
+            </Typography>
+          </Box>
+        </Box>
+
+        <Box sx={{ p: 4 }}>
+          <Grid container spacing={3}>
+            {days.map(renderDayCard)}
+          </Grid>
+        </Box>
+      </Paper>
+
+      {/* Cancel Confirmation Dialog */}
+      <Dialog
+        open={cancelDialog.open}
+        onClose={handleCancelClose}
+        aria-labelledby="cancel-dialog-title"
+        aria-describedby="cancel-dialog-description"
+        PaperProps={{
+          sx: {
+            borderRadius: 4,
+            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
+          }
+        }}
+      >
+        <DialogTitle 
+          id="cancel-dialog-title" 
+          sx={{ 
+            color: '#dc2626',
+            fontWeight: 700,
+            fontSize: '1.25rem',
+            pb: 1
+          }}
+        >
+          Cancel Class Booking
+        </DialogTitle>
+        <Divider />
+        <DialogContent sx={{ pt: 3 }}>
+          <DialogContentText 
+            id="cancel-dialog-description"
+            sx={{ 
+              fontSize: '1rem',
+              color: '#374151',
+              lineHeight: 1.6
+            }}
+          >
+            Are you sure you want to cancel this class booking? This action cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions sx={{ p: 3, pt: 2 }}>
+          <Button
+            onClick={handleCancelClose}
+            variant="outlined"
+            sx={{
+              borderRadius: 3,
+              px: 3,
+              py: 1,
+              fontWeight: 600,
+              borderColor: '#d1d5db',
+              color: '#374151',
+              '&:hover': {
+                borderColor: '#9ca3af',
+                backgroundColor: '#f9fafb'
+              }
+            }}
+          >
+            Keep Booking
+          </Button>
+          <Button
+            onClick={handleCancelConfirm}
+            variant="contained"
+            color="error"
+            sx={{
+              borderRadius: 3,
+              px: 3,
+              py: 1,
+              fontWeight: 600,
+              background: 'linear-gradient(135deg, #dc2626 0%, #b91c1c 100%)',
+              boxShadow: '0 4px 14px 0 rgba(220, 38, 38, 0.25)',
+              '&:hover': {
+                background: 'linear-gradient(135deg, #b91c1c 0%, #991b1b 100%)',
+                boxShadow: '0 6px 20px 0 rgba(220, 38, 38, 0.35)'
+              }
+            }}
+            autoFocus
+          >
+            Cancel Booking
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Container>
+  );
+};
+
+export default WeeklyScheduleSection;
