@@ -1194,9 +1194,9 @@ const LoginPage = () => {
             </Button>
           </div>
           
-          <div className="auth-switch">
+          {/* <div className="auth-switch">
             Don't have an account? <a href="/signup">Create Account</a>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

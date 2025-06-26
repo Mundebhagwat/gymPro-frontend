@@ -1,15 +1,41 @@
+// import React from 'react';
+// import { Navigate } from 'react-router-dom';
+
+// const ProtectedRoute = ({ children }) => {
+//   const authToken = localStorage.getItem('authToken');
+
+//   if (!authToken) {
+//     // User not logged in – redirect to login
+//     return <Navigate to="/signin" replace />;
+//   }
+
+//   return children; // User is authenticated
+// };
+
+// export default ProtectedRoute;
+
+
+
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
+import { isTokenValid, getUserRoleFromToken } from '../utils/auth';
 
-const ProtectedRoute = ({ children }) => {
-  const authToken = localStorage.getItem('authToken');
+const ProtectedRoute = ({ children, allowedRoles }) => {
+  const location = useLocation();
 
-  if (!authToken) {
-    // User not logged in – redirect to login
+  const validToken = isTokenValid();
+  const userRole = getUserRoleFromToken();
+
+  if (!validToken) {
+    localStorage.clear(); // clean old data
+    return <Navigate to="/signin" state={{ from: location }} replace />;
+  }
+
+  if (allowedRoles && !allowedRoles.includes(userRole)) {
     return <Navigate to="/signin" replace />;
   }
 
-  return children; // User is authenticated
+  return children;
 };
 
 export default ProtectedRoute;

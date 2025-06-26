@@ -626,7 +626,7 @@ const GymHomepage = () => {
           </div>
           <div className="nav-buttons">
             <button onClick={handleSignIn} className="btn btn-secondary">Sign In</button>
-            <button className="btn btn-primary">Register</button>
+            {/* <button className="btn btn-primary">Register</button> */}
           </div>
         </div>
       </nav>
@@ -643,8 +643,8 @@ const GymHomepage = () => {
               Book classes, track progress, and connect with a community that motivates you to achieve your goals.
             </p>
             <div className="hero-buttons">
-              <button className="btn btn-primary">🚀 Get Started</button>
-              <button className="btn btn-secondary">📖 Learn More</button>
+              <button onClick={handleSignIn} className="btn btn-primary" >🚀 Get Started</button>
+              {/* <button className="btn btn-secondary">📖 Learn More</button> */}
             </div>
           </div>
           
@@ -720,8 +720,8 @@ const GymHomepage = () => {
             Join thousands of members who have transformed their lives with GymPro
           </p>
           <div className="cta-buttons">
-            <button className="btn btn-primary">🎯 Sign Up Now</button>
-            <button className="btn btn-secondary">📝 Register Today</button>
+          {/* <button onClick={handleSignIn} className="btn btn-primary" >🚀 Get Started</button> */}
+            {/* <button className="btn btn-secondary">📝 Register Today</button> */}
           </div>
         </div>
       </section>
