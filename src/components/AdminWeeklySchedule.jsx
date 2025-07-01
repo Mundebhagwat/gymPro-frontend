@@ -1455,7 +1455,7 @@ const WeeklySchedule = () => {
                                         color: 'rgba(255,255,255,0.8)',
                                         fontSize: '0.65rem'
                                       }}>
-                                        {classData.enrolled}/{classData.capacity}
+                                        {/* {classData.enrolled}/{classData.capacity} */}
                                       </Typography>
                                     </Box>
                                     
