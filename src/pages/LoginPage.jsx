@@ -107,7 +107,7 @@
 //     setIsLoading(true);
     
 //     try {
-//       const response = await fetch('http://localhost:5000/api/users/commonlogin', {
+//       const response = await fetch('https://gympro-backend-i0rv.onrender.com/api/users/commonlogin', {
 //         method: 'POST',
 //         headers: {
 //           'Content-Type': 'application/json',
@@ -725,7 +725,7 @@ const LoginPage = () => {
     setIsLoading(true);
     
     try {
-      const response = await fetch('http://localhost:5000/api/users/commonlogin', {
+      const response = await fetch('https://gympro-backend-i0rv.onrender.com/api/users/commonlogin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

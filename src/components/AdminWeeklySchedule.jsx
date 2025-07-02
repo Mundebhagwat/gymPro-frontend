@@ -1169,7 +1169,7 @@ const WeeklySchedule = () => {
     const fetchSchedules = async () => {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:5000/api/schedules/fetchAll');
+        const response = await fetch('https://gympro-backend-i0rv.onrender.com/api/schedules/fetchAll');
         const data = await response.json();
         
         if (data.schedules) {

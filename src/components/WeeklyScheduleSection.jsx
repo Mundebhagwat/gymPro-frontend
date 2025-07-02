@@ -467,7 +467,7 @@
 //       setLoading(true);
 //       setError(null);
       
-//       const response = await fetch(`http://localhost:5000/api/schedules/trainer/${trainerId}/week`);
+//       const response = await fetch(`https://gympro-backend-i0rv.onrender.com/api/schedules/trainer/${trainerId}/week`);
       
 //       if (!response.ok) {
 //         throw new Error(`HTTP error! status: ${response.status}`);
@@ -968,7 +968,7 @@
 //       setLoading(true);
 //       setError(null);
       
-//       const response = await fetch(`http://localhost:5000/api/schedules/trainer/${trainerId}/week`);
+//       const response = await fetch(`https://gympro-backend-i0rv.onrender.com/api/schedules/trainer/${trainerId}/week`);
       
 //       if (!response.ok) {
 //         throw new Error(`HTTP error! status: ${response.status}`);
@@ -1027,7 +1027,7 @@
 //       setCancelling(true);
       
 //       // Make API call to cancel the booking
-//       const response = await fetch('http://localhost:5000/api/schedule-generator/reschedule', {
+//       const response = await fetch('https://gympro-backend-i0rv.onrender.com/api/schedule-generator/reschedule', {
 //         method: 'POST',
 //         headers: {
 //           'Content-Type': 'application/json',
@@ -1578,7 +1578,7 @@ const WeeklyScheduleSection = ({trainerId = localStorage.getItem("userId")}) => 
       setLoading(true);
       setError(null);
       
-      const response = await fetch(`http://localhost:5000/api/schedules/trainer/${trainerId}/week`);
+      const response = await fetch(`https://gympro-backend-i0rv.onrender.com/api/schedules/trainer/${trainerId}/week`);
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -1637,7 +1637,7 @@ const WeeklyScheduleSection = ({trainerId = localStorage.getItem("userId")}) => 
       setCancelling(true);
       
       // Make API call to cancel the booking
-      const response = await fetch('http://localhost:5000/api/schedule-generator/reschedule', {
+      const response = await fetch('https://gympro-backend-i0rv.onrender.com/api/schedule-generator/reschedule', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

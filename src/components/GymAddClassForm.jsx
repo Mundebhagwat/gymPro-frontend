@@ -123,7 +123,7 @@ const AddClassForm = () => {
         // timeTo: formData.timeTo.toTimeString().slice(0, 5) // Format as HH:MM
       };
 
-      const response = await fetch('http://localhost:5000/api/classes/create', {
+      const response = await fetch('https://gympro-backend-i0rv.onrender.com/api/classes/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

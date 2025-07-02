@@ -785,7 +785,7 @@ const AvailabilitySection = ({
     setLoading(true);
     try {
       const id = trainerId || localStorage.getItem('userId');
-      const response = await fetch(`http://localhost:5000/api/trainers/${id}`, {
+      const response = await fetch(`https://gympro-backend-i0rv.onrender.com/api/trainers/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -843,7 +843,7 @@ const AvailabilitySection = ({
 
     setLoading(true);
     try {
-      const response = await fetch(`http://localhost:5000/api/trainers/${id}`, {
+      const response = await fetch(`https://gympro-backend-i0rv.onrender.com/api/trainers/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -36,7 +36,7 @@
 // const fetchTrainers = async () => {
 //   try {
 //     setLoading(true);
-//     const response = await fetch('http://localhost:5000/api/trainers/fetchAll');
+//     const response = await fetch('https://gympro-backend-i0rv.onrender.com/api/trainers/fetchAll');
 
 //     if (!response.ok) {
 //       throw new Error(`HTTP error! status: ${response.status}`);
@@ -856,7 +856,7 @@
 //   const fetchTrainers = async () => {
 //     try {
 //       setLoading(true);
-//       const response = await fetch('http://localhost:5000/api/trainers/fetchAll');
+//       const response = await fetch('https://gympro-backend-i0rv.onrender.com/api/trainers/fetchAll');
 
 //       if (!response.ok) {
 //         throw new Error(`HTTP error! status: ${response.status}`);
@@ -945,7 +945,7 @@
 //           password: formData.password
 //         };
 
-//         const response = await fetch('http://localhost:5000/api/trainers/register', {
+//         const response = await fetch('https://gympro-backend-i0rv.onrender.com/api/trainers/register', {
 //           method: 'POST',
 //           headers: {
 //             'Content-Type': 'application/json',
@@ -1720,7 +1720,7 @@ const TrainersOverview = () => {
   const fetchTrainers = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:5000/api/trainers/fetchAll');
+      const response = await fetch('https://gympro-backend-i0rv.onrender.com/api/trainers/fetchAll');
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -1782,7 +1782,7 @@ const TrainersOverview = () => {
   const handleDeleteTrainer = async (id) => {
     if (window.confirm('Are you sure you want to delete this trainer?')) {
       try {
-        await axios.delete(`http://localhost:5000/api/trainers/${id}`);
+        await axios.delete(`https://gympro-backend-i0rv.onrender.com/api/trainers/${id}`);
         
         // Refresh the trainers list after successful deletion
         await fetchTrainers();
@@ -1811,7 +1811,7 @@ const TrainersOverview = () => {
           rest_period: formData.rest_period,
         };
 
-        await axios.put(`http://localhost:5000/api/trainers/${editingTrainer.id}`, trainerData);
+        await axios.put(`https://gympro-backend-i0rv.onrender.com/api/trainers/${editingTrainer.id}`, trainerData);
 
         // Refresh the trainers list after successful update
         await fetchTrainers();
@@ -1835,7 +1835,7 @@ const TrainersOverview = () => {
           password: formData.password
         };
 
-        const response = await fetch('http://localhost:5000/api/trainers/register', {
+        const response = await fetch('https://gympro-backend-i0rv.onrender.com/api/trainers/register', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

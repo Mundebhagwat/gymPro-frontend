@@ -383,7 +383,7 @@
 //   useEffect(() => {
 //     const fetchKpis = async () => {
 //       try {
-//         const res = await axios.get('http://localhost:5000/api/admins/kpis');
+//         const res = await axios.get('https://gympro-backend-i0rv.onrender.com/api/admins/kpis');
 //         const data = res.data;
 
 //         const activeTrainers = data.activeTrainers || { count: 0, change: '0%' };
@@ -771,7 +771,7 @@ const DashboardOverview = () => {
   useEffect(() => {
     const fetchKpis = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/admins/kpis');
+        const res = await axios.get('https://gympro-backend-i0rv.onrender.com/api/admins/kpis');
         const data = res.data;
 
         const activeTrainers = data.activeTrainers || { count: 0, change: '0%' };

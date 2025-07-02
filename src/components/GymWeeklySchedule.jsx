@@ -40,7 +40,7 @@ const WeeklySchedule = ({gymId = localStorage.getItem("userId")}) => {
     const fetchSchedules = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`http://localhost:5000/api/schedules/gym/${gymId}/week`);
+        const response = await fetch(`https://gympro-backend-i0rv.onrender.com/api/schedules/gym/${gymId}/week`);
         
         if (!response.ok) {
           throw new Error('Failed to fetch schedules');

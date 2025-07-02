@@ -594,7 +594,7 @@ const GymOverview = () => {
   const fetchGyms = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:5000/api/gyms/fetchAll');
+      const response = await fetch('https://gympro-backend-i0rv.onrender.com/api/gyms/fetchAll');
       if (response.ok) {
         const data = await response.json();
         console.log(data)
@@ -614,7 +614,7 @@ const GymOverview = () => {
 
   const createGym = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/gyms/register', {
+      const response = await fetch('https://gympro-backend-i0rv.onrender.com/api/gyms/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -643,7 +643,7 @@ const GymOverview = () => {
         delete updateData.password; // Don't send empty password
       }
 
-      const response = await fetch(`http://localhost:5000/api/gyms/${selectedGym._id}`, {
+      const response = await fetch(`https://gympro-backend-i0rv.onrender.com/api/gyms/${selectedGym._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -667,7 +667,7 @@ const GymOverview = () => {
 
   const deleteGym = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/gyms/${selectedGym._id}`, {
+      const response = await fetch(`https://gympro-backend-i0rv.onrender.com/api/gyms/${selectedGym._id}`, {
         method: 'DELETE',
       });
 
